@@ -436,7 +436,7 @@
 											</a>
 											</div>
 											<div class="team-actions justify-content-center">
-												<button type="button" class="btn btn-sm team-portfolio-btn" data-target="#sobre" aria-label="Ver Portifólio de Denner">Ver Portifólio</button>
+												<a href="https://dennervs.github.io/TechResolve/" target="_blank" rel="noopener noreferrer" class="btn btn-sm team-portfolio-btn" aria-label="Ver Portifólio de Denner">Ver Portifólio</a>
 											</div>
 										</div>
 									</div>
@@ -465,7 +465,7 @@
 											</a>
 											</div>
 											<div class="team-actions justify-content-center">
-												<button type="button" class="btn btn-sm team-portfolio-btn" data-target="#sobre" aria-label="Ver Portifólio do João">Ver Portifólio</button>
+												<a href="https://jvik19.github.io/site/" target="_blank" rel="noopener noreferrer" class="btn btn-sm team-portfolio-btn" aria-label="Ver Portifólio do João">Ver Portifólio</a>
 											</div>
 										</div>
 									</div>
@@ -494,7 +494,7 @@
 											</a>
 											</div>
 											<div class="team-actions justify-content-center">
-												<button type="button" class="btn btn-sm team-portfolio-btn" data-target="#sobre" aria-label="Ver Portifólio do Guilherme">Ver Portifólio</button>
+												<a href="https://guinsmnt.github.io/portifolio_guilherme/" target="_blank" rel="noopener noreferrer" class="btn btn-sm team-portfolio-btn" aria-label="Ver Portifólio do Guilherme">Ver Portifólio</a>
 											</div>
 										</div>
 									</div>
@@ -523,7 +523,7 @@
 											</a>
 											</div>
 											<div class="team-actions justify-content-center">
-												<button type="button" class="btn btn-sm team-portfolio-btn" data-target="#sobre" aria-label="Ver Portifólio da Claudielly">Ver Portifólio</button>
+												<a href="https://ellen-ctec.github.io/projeto-portifolio/" target="_blank" rel="noopener noreferrer" class="btn btn-sm team-portfolio-btn" aria-label="Ver Portifólio da Claudielly">Ver Portifólio</a>
 											</div>
 										</div>
 									</div>
@@ -843,21 +843,31 @@
 				else initContact();
 			})();
 
-			// Portfolio buttons: smooth-scroll to target section
+			// Portfolio buttons: smooth-scroll to target section (only for buttons with data-target)
 			(function(){
 				const pBtns = document.querySelectorAll('.team-portfolio-btn');
 				if(!pBtns || pBtns.length===0) return;
 				pBtns.forEach(btn => {
 					btn.setAttribute('tabindex','0');
-					btn.addEventListener('click', (e) => {
-						e.preventDefault();
-						const target = document.querySelector(btn.dataset.target || '#sobre');
-						if(target){
-							target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-						}
-					});
+					// Only apply smooth scroll to buttons with data-target attribute (internal links)
+					if(btn.hasAttribute('data-target')){
+						btn.addEventListener('click', (e) => {
+							e.preventDefault();
+							const target = document.querySelector(btn.dataset.target || '#sobre');
+							if(target){
+								target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+							}
+						});
+					}
 					btn.addEventListener('keydown', (e) => {
-						if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+						if(e.key === 'Enter' || e.key === ' ') { 
+							// For anchors with href, don't prevent default
+							if(btn.hasAttribute('href') && !btn.hasAttribute('data-target')){
+								return;
+							}
+							e.preventDefault(); 
+							btn.click(); 
+						}
 					});
 				});
 
